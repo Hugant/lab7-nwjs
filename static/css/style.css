@@ -79,3 +79,21 @@ table .form-control {
   margin-left: auto;
   margin-right: auto;
 }
+
+.ring {
+  border: 2px solid #f5f5f5;
+}
+
+.ring:hover {
+  cursor: pointer;
+  border: 2px solid black;
+}
+
+.ring-active {
+  border: 2px solid black;
+}
+
+.ring img {
+  width: 60px;
+  padding: 4px;
+}

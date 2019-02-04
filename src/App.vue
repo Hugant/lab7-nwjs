@@ -13,8 +13,43 @@ export default {
     return {
       name: '',
       group: '',
-      protocol: []
+      protocol: [],
+      datas: []
     }
+  },
+  mounted () {
+    this.datas[0] = {
+      weight: 0.260,
+      maxSpeed: 0.190,
+      minSpeed: 0.145,
+      used: false,
+      img: '../../static/ring1.svg',
+      t: []
+    }
+    this.datas[1] = {
+      weight: 0.410,
+      maxSpeed: 0.244,
+      minSpeed: 0.172,
+      used: false,
+      img: '../../static/ring2.svg',
+      t: []
+    }
+    this.datas[2] = {
+      weight: 0.630,
+      maxSpeed: 0.300,
+      minSpeed: 0.260,
+      used: false,
+      img: '../../static/ring3.svg',
+      t: []
+    }
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 5; j++) {
+        this.datas[i].t[j] = Math.random() * (this.datas[i].maxSpeed - this.datas[i].minSpeed) + this.datas[i].minSpeed
+        this.datas[i].t[j] = Number(this.datas[i].t[j].toFixed(3))
+        this.datas[i].t[j] = (0.4 / this.datas[i].t[j]).toFixed(3)
+      }
+    }
+    console.log(this.datas)
   }
 }
 </script>

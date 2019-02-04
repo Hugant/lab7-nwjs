@@ -8,13 +8,10 @@
               <h5 class="text-center">Прибор FРM-03</h5>
             </div>
             <div class="col-12">
-              <LabCanvas></LabCanvas>
+              <LabCanvas ref='canvas'></LabCanvas>
             </div>
-            <!-- TODO -->
-            <!-- Допилить функции которые буду блочить 
-              кнопки и прокидывать данные соли -->
-            <!-- Кнопки выбора солей -->
-            <div class="col-12 d-flex flex-wrap">
+            <div class="col-12 d-flex flex-wrap justify-content-center mt-2">
+              <div class="mx-2 ring" v-for="(ring, index) in datas" @click="getTimes(index)"><img :src="ring.img"></div>
             </div>
           </div>
         </div>
@@ -34,40 +31,17 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td scope="row">1</td>
+                    <tr v-for="index in 5">
+                      <td scope="row">{{index}}</td>
                       <td class="form-group">
-                        <input type="text" name="t1" id="t1" class="form-control" placeholder='Введите t1'>
+                        <input type="text" v-model="timesInput[index-1]" class="form-control" :placeholder="'Введите t'+index">
                       </td>
                     </tr>
-                    <tr>
-                      <td scope="row">2</td>
-                      <td class="form-group">
-                        <input type="text" name="t2" class="form-control" placeholder="Введите t2" id="t2">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td scope="row">3</td>
-                      <td class="form-group">
-                        <input type="text" name="t3" class="form-control" placeholder="Введите t3" id="t3">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td scope="row">4</td>
-                      <td class="form-group">
-                        <input type="text" name="t4" class="form-control" placeholder="Введите t4" id="t4">
-                      </td>
-                    </tr>
-                    <tr>
-                      <td scope="row">5</td>
-                      <td class="form-group">
-                        <input type="text" name="t5" class="form-control" placeholder="Введите t5" id="t5">
-                      </td>
-                    </tr>
+                    
                     <tr>
                       <td>t<sub>cp</sub></td>
                       <td class="form-group">
-                        <input type="text" name="tcp" class="form-control" placeholder="Введите tcp" id="tcp">
+                        <input type="text" v-model="timesInput[5]" class="form-control" placeholder="Введите tcp">
                       </td>
                     </tr>
                   </tbody>
@@ -125,12 +99,36 @@ export default {
   name: 'lab',
   data: function () {
     return {
-      data: {} // Данные по выбранной соли
+      datas: [], // Данные по выбранной соли
+      times: [],
+      timesInput: [],
+      chekedRing: false
     }
   },
   components: {
     Met,
     LabCanvas
+  },
+  mounted () {
+    this.datas = this.$parent.datas
+    this.datas[0].used = false
+  },
+  methods: {
+    getTimes (index) {
+      if (this.chekedRing) {
+        alert('Соль уже выбрана, прорешайте её')
+      } else {
+        this.datas[index].used = true
+        /*eslint-disable*/
+        $($(".ring-active")[0]).removeClass("ring-active")
+        $($(".ring")[index]).addClass("ring-active")
+        /*eslint-enable*/
+        this.times = this.datas[index].t
+        console.log(this.$refs.canvas.pendulum)
+        this.chekedRing = true
+        this.$refs.canvas.pendulum.initAnimationTimes(this.times)
+      }
+    }
   }
 }
 </script>
